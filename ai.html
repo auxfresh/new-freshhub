@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fresh Hub AI</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    body {
+      margin: 0;
+      background-color: ;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    header {
+      background-color: #1a0f24;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+      font-size: 1.25rem;
+      font-weight: bold;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 1rem;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+
+    iframe {
+      width: 100%;
+      border: none;
+      height: 500px;
+    }
+ .navbar {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #261736;
+            border-top: 1px solid #4d2e6b;
+            display: flex;
+            justify-content: space-around;
+            padding: 0.5rem 0;
+            z-index: 1000;
+        }
+        .navbar a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #ad8dce;
+            text-decoration: none;
+            font-size: 0.75rem;
+            padding: 0.5rem;
+        }
+        .navbar a.active {
+            color: #ffffff;
+        }
+        .navbar i {
+            font-size: 1.25rem;
+            margin-bottom: 0.25rem;
+        }
+  </style>
+</head>
+<body>
+
+  <header>
+    <i class="fas fa-robot"></i> Fresh Hub AI Assistant
+  </header>
+
+  <div class="container">
+    <iframe
+      src="https://www.chatbase.co/chatbot-iframe/_znEucvmIXv_dQ81T1ZKN"
+      allow="clipboard-write"
+    ></iframe>
+  </div>
+
+   <nav class="navbar">
+        <a href="dashboard.html"><i class="fa fa-home"></i><span>Home</span></a>
+        <a href="standings.html"><i class="fa fa-table"></i><span>Standings</span></a>
+        <a href="blog.html"><i class="fa fa-comment"></i><span>Community</span></a>
+        <a href="more.html" class="active"><i class="fa fa-bars"></i><span>More</span></a>
+    </nav>
+</body>
+</html>

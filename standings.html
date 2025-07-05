@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fresh Hub</title>
+  <link rel="icon" href="logo.png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #1a0f24;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      padding-top: 80px;
+      padding-bottom: 60px;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background-color: #1a0f24;
+      border-bottom: 1px solid #4d2e6b;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem;
+      z-index: 1000;
+    }
+
+    header h1 {
+      color: #ad8dce;
+      font-size: 1.25rem;
+      font-weight: bold;
+      text-align: center;
+      flex: 1;
+    }
+
+    header img {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .balance {
+      color: #ad8dce;
+      font-weight: bold;
+      text-align: right;
+      width: 3rem;
+    }
+
+    #welcomeMessage {
+      text-align: left;
+      margin-left: 5px;
+      margin-top: 1rem;
+      font-size: 18px;
+      color: #ad8dce;
+      font-family:fantasy ;
+    }
+
+    #verifiedBadge {
+      display: none;
+      color: #ad8dce;
+      font-size: 0.9rem;
+      margin-left: 0.3rem;
+    }
+
+    .standings {
+      padding: 1rem;
+    }
+
+    .table-responsive {
+      overflow: auto; /* Allows both horizontal and vertical scrolling */
+      max-height: 500px; /* Limits vertical height */
+      border: 1px solid #4d2e6b;
+      border-radius: 0.5rem;
+    }
+
+    table {
+      margin-top: 0; /* Remove top margin if the table-responsive handles spacing */
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #261736;
+      /* Ensure table takes up minimum width for scrolling to activate */
+      min-width: 700px; /* Adjust this value if your content is wider/narrower */
+    }
+
+    th, td {
+      padding: 0.8rem;
+      text-align: center;
+      font-size: 0.875rem;
+      border: 1px solid #4d2e6b;
+      box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    }
+
+    /* Styles for ALL headers (top sticky) */
+    th {
+      background-color: #1a0f24;
+      color: #ad8dce;
+      position: sticky;
+      top: 0; /* Makes header sticky on vertical scroll */
+      z-index: 3; /* High z-index for headers */
+    }
+
+    /* Styles for the FIRST fixed column (Pos) */
+    th:first-child,
+    td:first-child {
+      position: sticky;
+      left: 0; /* Makes this column sticky on horizontal scroll */
+      background-color: #261736; /* Background when sticky */
+      z-index: 2; /* Ensure it's above scrolling content but below sticky header */
+      width: 50px; /* Adjust as needed */
+      min-width: 50px;
+    }
+
+    /* Ensure the first-child TH (Pos header) is on top of other sticky headers */
+    th:first-child {
+        z-index: 4; /* Higher z-index for the top-left corner sticky header */
+        background-color: #1a0f24; /* Match header background */
+    }
+
+    /* Styles for the SECOND fixed column (Club) */
+    th:nth-child(2),
+    td:nth-child(2) {
+      position: sticky;
+      left: 50px; /* This value MUST match the width of the first column (Pos) */
+      background-color: #261736; /* Background when sticky */
+      z-index: 1; /* Ensure it's above scrolling content */
+      width: 180px; /* Adjust as needed for Club name and image */
+      min-width: 180px;
+      text-align: left; /* Align club name to the left */
+    }
+
+    /* Ensure the second-child TH (Club header) is on top of other sticky headers */
+    th:nth-child(2) {
+        z-index: 3; /* Same z-index as other sticky headers, but lower than first-child TH */
+        background-color: #1a0f24; /* Match header background */
+    }
+
+
+    td {
+      color: #ffffff;
+    }
+
+    .club {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-align: left;
+      white-space: nowrap; /* Prevent club name from wrapping */
+    }
+
+    .club img {
+      width: 30px;
+      height: 30px;
+      object-fit: contain;
+    }
+
+    .navbar {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background-color: #261736;
+      border-top: 1px solid #4d2e6b;
+      display: flex;
+      justify-content: space-around;
+      padding: 0.5rem 0;
+      z-index: 1000;
+    }
+
+    .navbar a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #ad8dce;
+      text-decoration: none;
+      font-size: 0.75rem;
+      padding: 0.5rem;
+    }
+
+    .navbar a.active {
+      color: #ffffff;
+    }
+
+    .navbar i {
+      font-size: 1.25rem;
+      margin-bottom: 0.25rem;
+    }
+
+    #loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #1a0f24;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #ad8dce;
+      border-top: 4px solid #ffffff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+ <div id="loader">
+    <div class="spinner"></div>
+  </div>
+
+  <header>
+    <img id="profileImage" src="logo4.png" alt="Profile">
+    <h1>Fresh Hub</h1>
+    <div id="headerBalance" class="balance">₦0.00</div>
+  </header>
+
+  <div id="welcomeMessage">
+    Welcome back, <span id="welcomeUsername">User</span><img src="verified.png"  style="height: 18px; vertical-align: middle; margin-left: 5px;">
+  </div>
+
+  <section class="standings">
+    <h2 style="font-family: fantasy;color: #ad8dce;">League 1</h2>
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>Pos</th><th>Club</th><th>P</th><th>W</th><th>D</th><th>L</th><th>F</th><th>A</th><th>GD</th><th>Pts</th>
+          </tr>
+        </thead>
+        <tbody id="standingsBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <nav class="navbar">
+    <a href="dashboard.html"><i class="fa fa-home"></i><span>Home</span></a>
+    <a href="standings.html" class="active"><i class="fa fa-table"></i><span>Standings</span></a>
+    <a href="blog.html"><i class="fa fa-comment"></i><span>Community</span></a>
+    <a href="more.html"><i class="fa fa-bars"></i><span>More</span></a>
+  </nav>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBWUjKRUpiLmwRi7UjQ5l_zCJ1YOGsaIg0",
+      authDomain: "fresh-hub-d509f.firebaseapp.com",
+      databaseURL: "https://fresh-hub-d509f-default-rtdb.firebaseio.com",
+      projectId: "fresh-hub-d509f",
+      storageBucket: "fresh-hub-d509f.appspot.com",
+      messagingSenderId: "101887757266",
+      appId: "1:101887757266:web:80c054959f6588771fd60b"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const database = getDatabase(app);
+
+    const loader = document.getElementById('loader');
+    const headerBalance = document.getElementById('headerBalance');
+    const welcomeUsername = document.getElementById('welcomeUsername');
+    const verifiedBadge = document.getElementById('verifiedBadge');
+    const profileImage = document.getElementById('profileImage');
+
+    async function fetchAndDisplayUserData(user) {
+      const userRef = ref(database, `users/${user.uid}`);
+      onValue(userRef, (snapshot) => {
+        const userData = snapshot.val();
+        if (userData) {
+          const username = userData.username || user.email.split('@')[0];
+          const balance = userData.balance || 0;
+          headerBalance.textContent = `₦${balance.toFixed(2)}`;
+          welcomeUsername.textContent = username;
+
+          if (username.toLowerCase() === 'cryptoaux2') {
+            verifiedBadge.style.display = 'inline';
+          }
+
+          if (user.photoURL) {
+            profileImage.src = user.photoURL;
+          }
+        } else {
+          welcomeUsername.textContent = user.email.split('@')[0];
+        }
+      });
+    }
+
+    function calculateAndSortStandings(teams) {
+      teams.forEach(team => {
+        team.played = team.wins + team.draws + team.losses;
+        team.points = (team.wins * 3) + team.draws;
+        team.goalDifference = team.goalsFor - team.goalsAgainst;
+      });
+
+      return teams.sort((a, b) => {
+        if (b.points !== a.points) return b.points - a.points;
+        return b.goalDifference - a.goalDifference;
+      });
+    }
+
+    function renderStandings(teams) {
+      const tbody = document.getElementById('standingsBody');
+      tbody.innerHTML = '';
+
+      teams.forEach((team, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${index + 1}</td>
+          <td class="club"><img src="${team.logo || 'logo.png'}" alt="${team.name}"> ${team.name}</td>
+          <td>${team.played}</td>
+          <td>${team.wins}</td>
+          <td>${team.draws}</td>
+          <td>${team.losses}</td>
+          <td>${team.goalsFor}</td>
+          <td>${team.goalsAgainst}</td>
+          <td>${team.goalDifference}</td>
+          <td>${team.points}</td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    function fetchAndDisplayStandings() {
+      const playersRef = ref(database, 'players');
+      onValue(playersRef, (snapshot) => {
+        const data = snapshot.val();
+        if (!data) return;
+        const teams = Object.values(data);
+        const sorted = calculateAndSortStandings(teams);
+        renderStandings(sorted);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          fetchAndDisplayUserData(user);
+          fetchAndDisplayStandings();
+          loader.style.display = 'none';
+        } else {
+          window.location.href = 'login.html';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

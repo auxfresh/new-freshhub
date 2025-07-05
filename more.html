@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Menu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #1a0f24;
+            border-bottom: 1px solid #4d2e6b;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            z-index: 1000;
+        }
+        header h1 {
+            color: #ad8dce;
+            font-size: 1.25rem;
+            font-weight: bold;
+            text-align: center;
+            flex: 1;
+            margin: 0;
+        }
+        header img {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .balance {
+            color: #ad8dce;
+            font-weight: bold;
+            text-align: right;
+            min-width: 5rem;
+            padding-left: 1rem;
+        }
+        #welcomeMessage {
+            text-align:center;
+            margin-left: 5px; /* Removed extra semicolon */
+            font-size: 18px;
+            color: #ad8dce;
+            font-family: fantasy;
+            position: relative;
+            z-index: 1;
+        }
+        #verifiedBadge {
+            display: none;
+            height: 18px;
+            vertical-align: middle;
+            margin-left: 5px;
+        }
+        main {
+            padding-top: 10px;
+            padding-bottom: 6rem;
+            flex: 1;
+        }
+        .menu {
+            width: 100%;
+            margin-top: 5px;
+            z-index: 100;
+            margin-left: 15px;
+        }
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            background-color: #2a2a2a; /* Corrected to a valid hex code or remove the extra '#' */
+            color: #ad8dce;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .menu-item:hover {
+            background-color: #3a3a3a;
+        }
+        .icon {
+            font-size: 24px;
+            margin-right: 15px;
+            width: 40px;
+            height: 40px;
+            background-color: #3a3a3a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+        }
+        .text h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #ffffff;
+            font-weight: bold;
+        }
+        .text p {
+            margin: 5px 0 0;
+            font-size: 12px;
+            color: #ad8dce;
+        }
+        .go-to {
+            margin-left: auto;
+            font-size: 18px;
+            color: #4d2e6b;
+        }
+        .navbar {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #261736;
+            border-top: 1px solid #4d2e6b;
+            display: flex;
+            justify-content: space-around;
+            padding: 0.5rem 0;
+            z-index: 1000;
+        }
+        .navbar a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #ad8dce;
+            text-decoration: none;
+            font-size: 0.75rem;
+            padding: 0.5rem;
+        }
+        .navbar a.active {
+            color: #ffffff;
+        }
+        .navbar i {
+            font-size: 1.25rem;
+            margin-bottom: 0.25rem;
+        }
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #1a0f24;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #ad8dce;
+            border-top: 4px solid #ffffff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @media (max-width: 480px) {
+            .menu {
+                width: 90%;
+                margin-top: 6rem;
+            }
+            .balance {
+                min-width: 6rem;
+            }
+            #welcomeMessage {
+                margin-top: 5rem;
+                font-size: 16px;
+            }
+            header h1 {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="loader">
+        <div class="spinner"></div>
+    </div>
+    <header>
+        <img id="profileImage" src="logo4.png" alt="Profile">
+        <h1>Fresh Hub</h1>
+        <div id="headerBalance" class="balance">₦200.00</div>
+    </header>
+    <main>
+        <div id="welcomeMessage">
+            Welcome back, <span id="welcomeUsername">User</span>
+            <img id="verifiedBadge" src="verified.png" alt="Verified">
+        </div>
+        <div class="menu">
+            <div class="menu-item" onclick="window.redirect('more/stat')">
+                <div class="icon"><i class="fa-solid fa-bar-chart"></i></div>
+                <div class="text">
+                    <h3>Stats</h3>
+                    <p>View The Tournament Stats</p>
+                </div>
+                <div class="go-to"><i class="fas fa-chevron-right"></i></div>
+            </div>
+            <div class="menu-item" onclick="window.redirect('more/livestream')">
+                <div class="icon"><i class="fas fa-tower-broadcast"></i></div>
+                <div class="text">
+                    <h3>Livestream</h3>
+                    <p>Watch Live Matches From Anywhere</p>
+                </div>
+                <div class="go-to"><i class="fas fa-chevron-right"></i></div>
+            </div>
+            <div class="menu-item" onclick="window.redirect('more/wallet')">
+                <div class="icon"><i class="fas fa-wallet"></i></div>
+                <div class="text">
+                    <h3>My Wallet</h3>
+                    <p>Send and Receive Funds With No Stress</p>
+                </div>
+                <div class="go-to"><i class="fas fa-chevron-right"></i></div>
+            </div>
+            <div class="menu-item" onclick="window.redirect('ai')">
+                <div class="icon"><i class="fas fa-robot"></i></div>
+                <div class="text">
+                    <h3>Fresh Hub Ai</h3>
+                    <p>Chat With The Fresh Hub Ai</p>
+                </div>
+                <div class="go-to"><i class="fas fa-chevron-right"></i></div>
+            </div>
+            <div class="menu-item" onclick="window.redirect('more/award')">
+                <div class="icon"><i class="fas fa-award"></i></div>
+                <div class="text">
+                    <h3>Awards</h3>
+                    <p>View The Tournament Awards</p>
+                </div>
+                <div class="go-to"><i class="fas fa-chevron-right"></i></div>
+            </div>
+             <div class="menu-item" onclick="window.redirect('minigames')">
+                <div class="icon"><i class="fas fa-gamepad"></i></div>
+                <div class="text">
+                    <h3>Mini Games</h3>
+                    <p>Mini Games At Your Comfort</p>
+                </div>
+                <div class="go-to"><i class="fas fa-chevron-right"></i></div>
+            </div>
+            <div class="menu-item" id="adminItem" style="display: none;" onclick="window.redirect('adminpage/admin-login')">
+                <div class="icon"><i class="fas fa-shield-alt"></i></div>
+                <div class="text">
+                    <h3>Admin</h3>
+                    <p>Manage app settings</p>
+                </div>
+                <div class="go-to"><i class="fas fa-chevron-right"></i></div>
+            </div>
+            <div class="menu-item" id="logoutItem" onclick="window.logout()">
+                <div class="icon"><i class="fas fa-sign-out-alt"></i></div>
+                <div class="text">
+                    <h3>Logout</h3>
+                    <p>Sign out of your account</p>
+                </div>
+                <div class="go-to"><i class="fas fa-chevron-right"></i></div>
+            </div>
+        </div>
+    </main>
+    <nav class="navbar">
+        <a href="dashboard.html"><i class="fa fa-home"></i><span>Home</span></a>
+        <a href="standings.html"><i class="fa fa-table"></i><span>Standings</span></a>
+        <a href="blog.html"><i class="fa fa-comment"></i><span>Community</span></a>
+        <a href="more.html" class="active"><i class="fa fa-bars"></i><span>More</span></a>
+    </nav>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBWUjKRUpiLmwRi7UjQ5l_zCJ1YOGsaIg0",
+            authDomain: "fresh-hub-d509f.firebaseapp.com",
+            databaseURL: "https://fresh-hub-d509f-default-rtdb.firebaseio.com",
+            projectId: "fresh-hub-d509f",
+            storageBucket: "fresh-hub-d509f.appspot.com",
+            messagingSenderId: "101887757266",
+            appId: "1:101887757266:web:80c054959f6588771fd60b"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const database = getDatabase(app);
+
+        const loader = document.getElementById('loader');
+        const headerBalance = document.getElementById('headerBalance');
+        const welcomeUsername = document.getElementById('welcomeUsername');
+        const verifiedBadge = document.getElementById('verifiedBadge');
+        const profileImage = document.getElementById('profileImage');
+        const adminItem = document.getElementById('adminItem');
+        const logoutItem = document.getElementById('logoutItem');
+
+        async function fetchAndDisplayUserData(user) {
+            const userRef = ref(database, `users/${user.uid}`);
+            onValue(userRef, (snapshot) => {
+                const userData = snapshot.val();
+                if (userData) {
+                    const username = userData.username || user.email.split('@')[0];
+                    const balance = userData.balance || 200.00;
+                    headerBalance.textContent = `₦${balance.toFixed(2)}`;
+                    welcomeUsername.textContent = username;
+
+                    if (username.toLowerCase() === 'cryptoaux2') {
+                        verifiedBadge.style.display = 'inline';
+                        adminItem.style.display = 'flex'; // Show admin item for cryptoaux2
+                    } else {
+                        verifiedBadge.style.display = 'none';
+                        adminItem.style.display = 'none'; // Hide admin item for others
+                    }
+
+                    if (user.photoURL) {
+                        profileImage.src = user.photoURL;
+                    }
+                } else {
+                    welcomeUsername.textContent = user.email.split('@')[0];
+                    headerBalance.textContent = '₦200.00';
+                    verifiedBadge.style.display = 'none';
+                    adminItem.style.display = 'none';
+                }
+                loader.style.display = 'none';
+            }, (error) => {
+                console.error('Error fetching user data:', error);
+                welcomeUsername.textContent = user.email.split('@')[0];
+                headerBalance.textContent = '₦200.00';
+                verifiedBadge.style.display = 'none';
+                adminItem.style.display = 'none';
+                loader.style.display = 'none';
+            });
+        }
+
+        // Make these functions globally accessible
+        window.redirect = function(page) {
+            window.location.href = `${page}.html`;
+        };
+
+        window.logout = async function() {
+            try {
+                await signOut(auth);
+                window.location.href = 'login.html';
+            } catch (error) {
+                console.error('Logout error:', error);
+                alert('Failed to log out. Please try again.');
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    fetchAndDisplayUserData(user);
+                } else {
+                    loader.style.display = 'none';
+                    window.location.href = 'login.html';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
